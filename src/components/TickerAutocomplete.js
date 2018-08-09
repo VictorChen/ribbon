@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/lib/Async';
 import { fetchTickers } from '../utils/api';
 
 const StyledAsyncSelect = styled(AsyncSelect)`
+  color: black;
   .ticker-autocomplete__control--is-focused .ticker-autocomplete__single-value {
     opacity: 0.4;
   }
@@ -21,7 +22,7 @@ const TickerSymbol = styled.span`
   width: 80px;
 `;
 
-class TickerAutocomplete extends Component {
+class TickerAutocomplete extends React.Component {
   static propTypes = {
     onChange: PropTypes.func
   };

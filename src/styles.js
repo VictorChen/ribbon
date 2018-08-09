@@ -1,9 +1,5 @@
-import { injectGlobal } from 'styled-components';
+const styles = {
+  bodyTextColor: '#e8e8e8'
+};
 
-injectGlobal`
-  body {
-    padding: 0;
-    margin: 0;
-    font-family: sans-serif;
-  }
-`;
+export default styles;

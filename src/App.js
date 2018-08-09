@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   LineChart,
   Line,
@@ -9,47 +9,40 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import styled from 'styled-components';
-import TickerAutocomplete from './components/TickerAutocomplete';
+import { Scrollbars } from 'react-custom-scrollbars';
+import MainContainer from './components/MainContainer';
+import PortfoliosList from './components/PortfoliosList';
+import Intro from './components/Intro';
+import Nav from './components/Nav';
 import { fetchTickerHistory } from './utils/api';
-import './styles';
+import './globalStyles';
 
 const AppWrapper = styled.div`
-  background-color: #232323;
+  background-color: #1b2449;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   overflow: auto;
-  padding: 20px;
-`;
-
-const AppHeader = styled.div`
-  background-color: #232323;
-`;
-
-const AppTitle = styled.h1`
-  color: white;
 `;
 
 const AppBody = styled.div`
   display: flex;
-`;
-
-const AppSide = styled.div`
-  width: 350px;
-`;
-
-const AppMain = styled.div`
-  background-color: gray;
   flex-grow: 1;
 `;
 
-const ChartWrapper = styled.div``;
-
-const ChartPlaceholder = styled.div`
-  height: 400px;
-  border: 1px solid gray;
+const AppSide = styled.div`
+  flex: 0 0 260px;
+  padding: 40px 60px;
 `;
 
-class App extends Component {
+const AppMain = styled.div`
+  flex-grow: 1;
+  overflow: auto;
+  width: 0; // https://github.com/recharts/recharts/issues/172
+`;
+
+class App extends React.Component {
   state = {
     stockPrices: []
   };
@@ -74,7 +67,7 @@ class App extends Component {
 
     if (stockPrices.length) {
       return (
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={stockPrices}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -96,21 +89,22 @@ class App extends Component {
       );
     }
 
-    return <ChartPlaceholder />;
+    return <Intro />;
   }
 
   render() {
     return (
       <AppWrapper>
-        <AppHeader>
-          <AppTitle>Portfolio Backtester</AppTitle>
-        </AppHeader>
+        <Nav />
         <AppBody>
           <AppSide>
-            <TickerAutocomplete onChange={this.handleTickerChange} />
+            <PortfoliosList />
           </AppSide>
           <AppMain>
-            <ChartWrapper>{this.renderChart()}</ChartWrapper>
+            <Scrollbars style={{ height: '100%' }}>
+              <MainContainer>{this.renderChart()}</MainContainer>
+              <MainContainer />
+            </Scrollbars>
           </AppMain>
         </AppBody>
       </AppWrapper>
