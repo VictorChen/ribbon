@@ -1,24 +1,14 @@
 import React from 'react';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MainContainer from './components/MainContainer';
 import PortfoliosList from './components/PortfoliosList';
-import Intro from './components/Intro';
+import PortfoliosChart from './components/PortfoliosChart';
 import Nav from './components/Nav';
-import { fetchTickerHistory } from './utils/api';
-import './globalStyles';
+import './styles/globalStyles';
 
 const AppWrapper = styled.div`
-  background-color: #1b2449;
+  background-image: linear-gradient(#323c73, #1a244b);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -32,8 +22,7 @@ const AppBody = styled.div`
 `;
 
 const AppSide = styled.div`
-  flex: 0 0 260px;
-  padding: 40px 60px;
+  flex: 0 0 360px;
 `;
 
 const AppMain = styled.div`
@@ -43,66 +32,21 @@ const AppMain = styled.div`
 `;
 
 class App extends React.Component {
-  state = {
-    stockPrices: []
-  };
-
-  handleTickerChange = ticker => {
-    if (ticker && ticker.value) {
-      fetchTickerHistory(ticker.value).then(
-        stockPrices => {
-          this.setState({ stockPrices });
-        },
-        error => {
-          alert('Symbol not supported');
-        }
-      );
-    } else {
-      this.setState({ stockPrices: [] });
-    }
-  };
-
-  renderChart() {
-    const { stockPrices } = this.state;
-
-    if (stockPrices.length) {
-      return (
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={stockPrices}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <XAxis dataKey="date" />
-            <YAxis
-              label={{ value: 'Price', angle: -90, position: 'insideLeft' }}
-            />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="close"
-              dot={false}
-              stroke="#8884d8"
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      );
-    }
-
-    return <Intro />;
-  }
-
   render() {
     return (
       <AppWrapper>
         <Nav />
         <AppBody>
           <AppSide>
-            <PortfoliosList />
+            <Scrollbars style={{ height: '100%' }}>
+              <PortfoliosList />
+            </Scrollbars>
           </AppSide>
           <AppMain>
             <Scrollbars style={{ height: '100%' }}>
-              <MainContainer>{this.renderChart()}</MainContainer>
+              <MainContainer>
+                <PortfoliosChart />
+              </MainContainer>
               <MainContainer />
             </Scrollbars>
           </AppMain>
