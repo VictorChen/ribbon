@@ -1,20 +1,11 @@
 import React from 'react';
 import moment from 'moment';
 import Intro from './Intro';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  CartesianGrid
-} from 'recharts';
+import ReactEcharts from 'echarts-for-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const CHART_COLORS = ['#2c8a6c', '#9d3254'];
+// const CHART_COLORS = ['#2c8a6c', '#9d3254'];
 
 class PortfoliosChart extends React.Component {
   static propTypes = {
@@ -134,24 +125,7 @@ class PortfoliosChart extends React.Component {
       return this.getCombinedPortfolioData(portfolio.holdings, earliestDate);
     });
 
-    console.log(portfolioCombinedHistories);
-
-    if (!portfolioCombinedHistories.length) {
-      return [];
-    }
-
-    return portfolioCombinedHistories[0].map((dateHistory, index) => {
-      const item = {
-        date: moment(dateHistory.date).valueOf()
-      };
-
-      portfolios.forEach((portfolio, portfolioIndex) => {
-        item[portfolio.id] =
-          portfolioCombinedHistories[portfolioIndex][index].percentChange;
-      });
-
-      return item;
-    });
+    return portfolioCombinedHistories;
   }
 
   toolTipLabelFormatter(unixTime) {
@@ -172,60 +146,87 @@ class PortfoliosChart extends React.Component {
 
   render() {
     const validPortfolios = this.getValidPortfolios();
+    const chartData = this.getCombinedChartData(validPortfolios);
+
+    console.log(chartData);
+
+    const series = chartData.map(portfolioData => {
+      return {
+        data: portfolioData.map(item => {
+          return {
+            value: [item.date, item.percentChange]
+          };
+        }),
+        type: 'line',
+        symbol: 'none'
+      };
+    });
 
     if (validPortfolios.length) {
-      return (
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart
-            data={this.getCombinedChartData(validPortfolios)}
-            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-          >
-            <XAxis
-              dataKey="date"
-              type="number"
-              tickCount={7}
-              domain={['dataMin', 'dataMax']}
-              tickFormatter={unixTime => moment(unixTime).format('MM/DD/YY')}
-            />
-            <YAxis
-              tickFormatter={this.yTickFormatter}
-              label={{
-                offset: 10,
-                angle: -90,
-                fill: 'white',
-                position: 'insideLeft'
-              }}
-            />
-            <CartesianGrid
-              fillOpacity={0.5}
-              strokeDasharray="3 3"
-              stroke="#666666"
-              vertical
-              horizontal
-              verticalFill={['#0d1738', '#1d2b58']}
-            />
-            <Tooltip
-              itemSorter={this.sortTooltips}
-              labelFormatter={this.toolTipLabelFormatter}
-              formatter={this.tooltipValueFormatter}
-            />
-            <Legend />
-            {validPortfolios.map((portfolio, index) => {
-              return (
-                <Line
-                  key={portfolio.id}
-                  name={portfolio.name}
-                  type="monotone"
-                  dataKey={portfolio.id}
-                  dot={false}
-                  strokeWidth={2}
-                  stroke={CHART_COLORS[index]}
-                />
-              );
-            })}
-          </LineChart>
-        </ResponsiveContainer>
-      );
+      const chartOptions = {
+        grid: {
+          left: 40,
+          top: 20,
+          right: 20,
+          bottom: 40
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'time',
+          axisLabel: {
+            color: '#818999'
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#ecedef'
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgba(83, 82, 82, 0.5)',
+              type: 'dotted'
+            }
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['rgba(29, 43, 88, 0.35)', 'rgba(22, 21, 78, 0)']
+            }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          min: 'dataMin',
+          max: 'dataMax',
+          axisLabel: {
+            color: '#818999'
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#ecedef'
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgba(83, 82, 82, 1)',
+              type: 'dotted'
+            }
+          },
+          splitArea: {
+            show: true,
+            areaStyle: {
+              color: ['#0d1738']
+            }
+          }
+        },
+        series
+      };
+
+      return <ReactEcharts option={chartOptions} opts={{ renderer: 'svg' }} />;
     }
     return <Intro />;
   }
