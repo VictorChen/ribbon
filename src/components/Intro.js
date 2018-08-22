@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const Intro = () => {
   return (
     <Wrapper>
-      <h1>Feather</h1>
+      <h1>Ribbon</h1>
       <p>
         This free tool allows you to backtest multiple portfolios. You will be
         able to observe how one portfolio compares to another during historical
