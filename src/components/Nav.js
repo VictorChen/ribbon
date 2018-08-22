@@ -1,15 +1,25 @@
 import React from 'react';
-import Logo from './Logo';
 import styled from 'styled-components';
+import { styles } from '../styles/common';
 
 const Wrapper = styled.div`
-  height: 100px;
+  height: ${styles.navHeight}px;
+  position: relative;
+`;
+
+const Logo = styled.div`
+  color: #4d9ef0;
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  top: 30px;
+  left: 15px;
 `;
 
 const Nav = () => {
   return (
     <Wrapper>
-      <Logo />
+      <Logo>ribbon</Logo>
     </Wrapper>
   );
 };

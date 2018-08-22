@@ -5,7 +5,7 @@ import AsyncSelect from 'react-select/lib/Async';
 import { fetchTickers } from '../utils/api';
 import Tooltip from 'rc-tooltip';
 import ReactDOM from 'react-dom';
-import styles from '../styles/styles';
+import { styles } from '../styles/common';
 
 const TickerSymbol = styled.div`
   color: '#c0c3cc';

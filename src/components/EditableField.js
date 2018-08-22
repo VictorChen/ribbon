@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import EditIconSrc from '../assets/edit.png';
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -15,21 +14,6 @@ const Field = styled.span`
   margin: 0;
   padding: 5px 8px;
   position: relative;
-
-  &:hover img {
-    opacity: 1;
-  }
-
-  img {
-    width: 12px;
-    height: 12px;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: -10px;
-    transition: opacity 0.3s ease-in;
-    transform: translateY(-50%);
-  }
 `;
 
 const InputField = Field.withComponent('input').extend`
@@ -38,6 +22,7 @@ const InputField = Field.withComponent('input').extend`
   color: white;
   width: ${props => props.width}
   outline: none;
+  opacity: 0.8;
 `;
 
 class EditableField extends React.Component {
@@ -89,11 +74,7 @@ class EditableField extends React.Component {
       );
     }
 
-    return (
-      <Field onClick={this.handleEditStart}>
-        {this.props.value} <img src={EditIconSrc} alt="edit name" />
-      </Field>
-    );
+    return <Field onClick={this.handleEditStart}>{this.props.value}</Field>;
   }
 
   render() {

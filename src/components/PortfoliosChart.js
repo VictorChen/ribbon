@@ -4,52 +4,16 @@ import Intro from './Intro';
 import ReactEcharts from 'echarts-for-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
-// const CHART_COLORS = ['#2c8a6c', '#9d3254'];
+import { chartSeriesColors } from '../styles/common';
+import { isValidPortfolio } from '../utils/portfolioUtil';
 
 class PortfoliosChart extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired
   };
 
-  filterHoldings(portfolio) {
-    return {
-      ...portfolio,
-      holdings: portfolio.holdings.filter(
-        holding =>
-          holding.ticker &&
-          holding.percent &&
-          holding.ticker.history &&
-          holding.ticker.history.length
-      )
-    };
-  }
-
   getValidPortfolios() {
-    const validPortfolios = this.props.portfolios.filter(portfolio => {
-      let sumPercent = 0;
-
-      for (let i = 0; i < portfolio.holdings.length; i++) {
-        const currentHolding = portfolio.holdings[i];
-
-        // Ticker has percent but no history
-        if (
-          currentHolding.percent &&
-          (!currentHolding.ticker.history ||
-            !currentHolding.ticker.history.length)
-        ) {
-          return false;
-        }
-
-        if (!currentHolding.unsupportedSymbol) {
-          sumPercent += currentHolding.percent;
-        }
-      }
-
-      return sumPercent === 100;
-    });
-
-    return validPortfolios.map(this.filterHoldings);
+    return this.props.portfolios.filter(isValidPortfolio);
   }
 
   getEarliestDate(portfolios) {
@@ -148,17 +112,17 @@ class PortfoliosChart extends React.Component {
     const validPortfolios = this.getValidPortfolios();
     const chartData = this.getCombinedChartData(validPortfolios);
 
-    console.log(chartData);
-
-    const series = chartData.map(portfolioData => {
+    const series = chartData.map((portfolioData, index) => {
       return {
+        name: validPortfolios[index].name,
         data: portfolioData.map(item => {
           return {
             value: [item.date, item.percentChange]
           };
         }),
         type: 'line',
-        symbol: 'none'
+        symbol: 'none',
+        itemStyle: { color: chartSeriesColors[index] }
       };
     });
 
@@ -170,6 +134,7 @@ class PortfoliosChart extends React.Component {
           right: 20,
           bottom: 40
         },
+        legend: {},
         tooltip: {
           trigger: 'axis'
         },
@@ -199,8 +164,6 @@ class PortfoliosChart extends React.Component {
         },
         yAxis: {
           type: 'value',
-          min: 'dataMin',
-          max: 'dataMax',
           axisLabel: {
             color: '#818999'
           },

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ChartWrapper = styled.div`
+const MainContainer = styled.div`
   background-color: #0d1738;
   padding: 40px;
   & + & {
@@ -8,4 +8,4 @@ const ChartWrapper = styled.div`
   }
 `;
 
-export default ChartWrapper;
+export default MainContainer;

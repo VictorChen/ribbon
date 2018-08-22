@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CreatableSelect from 'react-select/lib/Creatable';
-import styles from '../styles/styles';
+import { styles } from '../styles/common';
 
 const PercentNumber = styled.span`
   color: #4e8cc1;

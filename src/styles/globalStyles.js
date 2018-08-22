@@ -1,5 +1,5 @@
 import { injectGlobal } from 'styled-components';
-import styles from './styles';
+import { styles } from './common';
 import tooltipStyles from './tooltipStyles';
 
 injectGlobal`

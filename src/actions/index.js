@@ -1,4 +1,4 @@
-import uniqueId from '../utils/uniqueId';
+import uniqueId from 'lodash.uniqueid';
 
 const receiveTickerHistory = (ticker, tickerHistory, holdingId) => {
   return {

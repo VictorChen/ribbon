@@ -54,7 +54,9 @@ const AddButton = styled.span`
   }
 `;
 
-const HoldingsList = styled.div``;
+const HoldingsList = styled.div`
+  padding-right: 40px;
+`;
 
 class PortfolioWidget extends React.Component {
   static propTypes = {

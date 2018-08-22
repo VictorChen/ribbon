@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { addPortfolio, addHolding } from '../actions';
 
 const Wrapper = styled.div`
-  padding: 20px;
+  margin-right: 60px;
 `;
 
 const StyledPortfolioWidget = styled(PortfolioWidget)`
@@ -27,6 +27,7 @@ const AddButton = styled.button`
   margin: 0;
   background-color: transparent;
   font-size: 16px;
+  transition: color 0.3s;
 
   img {
     width: 18px;

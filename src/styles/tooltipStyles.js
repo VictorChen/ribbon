@@ -1,4 +1,4 @@
-import styles from './styles';
+import { styles } from './common';
 
 const tooltipStyles = `
   .rc-tooltip.rc-tooltip-zoom-enter,
