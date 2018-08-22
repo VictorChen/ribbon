@@ -21,8 +21,13 @@ const StyledAsyncSelect = styled(AsyncSelect)`
     padding: 2px;
   }
 
+  .ticker-autocomplete__loading-indicator > * {
+    background-color: white;
+  }
+
   .ticker-autocomplete__menu {
     font-size: 14px;
+    z-index: 2000;
   }
 
   .ticker-autocomplete__input {

@@ -12,8 +12,23 @@ class PortfoliosChart extends React.Component {
     dispatch: PropTypes.func.isRequired
   };
 
+  filterHoldings(portfolio) {
+    return {
+      ...portfolio,
+      holdings: portfolio.holdings.filter(
+        holding =>
+          holding.ticker &&
+          holding.percent &&
+          holding.ticker.history &&
+          holding.ticker.history.length
+      )
+    };
+  }
+
   getValidPortfolios() {
-    return this.props.portfolios.filter(isValidPortfolio);
+    return this.props.portfolios
+      .filter(isValidPortfolio)
+      .map(this.filterHoldings);
   }
 
   getEarliestDate(portfolios) {
