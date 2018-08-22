@@ -5,14 +5,14 @@ const Logo = styled.div`
   background-color: #335ece;
   color: #1f3164;
   display: flex;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
   height: 64px;
   justify-content: center;
   width: 64px;
 
   &:after {
-    content: 'F';
+    content: 'ribbon';
   }
 `;
 
