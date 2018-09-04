@@ -4,7 +4,7 @@ import Intro from './Intro';
 import ReactEcharts from 'echarts-for-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { chartSeriesColors } from '../styles/common';
+import { styles, chartSeriesColors } from '../styles/common';
 import { isValidPortfolio } from '../utils/portfolioUtil';
 
 class PortfoliosChart extends React.Component {
@@ -125,16 +125,22 @@ class PortfoliosChart extends React.Component {
 
   render() {
     const validPortfolios = this.getValidPortfolios();
-    const chartData = this.getCombinedChartData(validPortfolios);
+    const earliestDate = this.getEarliestDate(validPortfolios);
 
-    const series = chartData.map((portfolioData, index) => {
+    const series = this.props.portfolios.map((portfolio, index) => {
+      // https://github.com/apache/incubator-echarts/issues/6202
+      const portfolioData = isValidPortfolio(portfolio)
+        ? this.getCombinedPortfolioData(
+            this.filterHoldings(portfolio).holdings,
+            earliestDate
+          )
+        : [];
+
       return {
-        name: validPortfolios[index].name,
-        data: portfolioData.map(item => {
-          return {
-            value: [item.date, item.percentChange]
-          };
-        }),
+        name: portfolio.name,
+        data: portfolioData.map(item => ({
+          value: [item.date, item.percentChange]
+        })),
         type: 'line',
         symbol: 'none',
         itemStyle: { color: chartSeriesColors[index] }
@@ -147,11 +153,29 @@ class PortfoliosChart extends React.Component {
           left: 40,
           top: 20,
           right: 20,
-          bottom: 40
+          bottom: 80
         },
-        legend: {},
         tooltip: {
           trigger: 'axis'
+        },
+        dataZoom: {
+          borderColor: styles.dark1,
+          show: true,
+          realtime: true,
+          backgroundColor: styles.dark1,
+          dataBackground: {
+            areaStyle: {
+              color: '#D8D8D8',
+              opacity: 0.2
+            }
+          },
+          fillerColor: 'rgba(29,43,88,0.5)',
+          handleColor: '#D8D8D8',
+          start: 0,
+          end: 100,
+          textStyle: {
+            color: 'transparent'
+          }
         },
         xAxis: {
           type: 'time',
@@ -197,7 +221,7 @@ class PortfoliosChart extends React.Component {
           splitArea: {
             show: true,
             areaStyle: {
-              color: ['#0d1738']
+              color: [styles.dark1]
             }
           }
         },
@@ -213,7 +237,7 @@ class PortfoliosChart extends React.Component {
 const mapStateToProps = state => {
   const { portfolios, portfoliosById, holdingsById, tickersHistory } = state;
   return {
-    portfolios: portfolios.map(portfolioId => ({
+    portfolios: portfolios.map((portfolioId, index) => ({
       ...portfoliosById[portfolioId],
       id: portfolioId,
       holdings: portfoliosById[portfolioId].holdings.map(holdingId => {
@@ -229,7 +253,8 @@ const mapStateToProps = state => {
               []
           }
         };
-      })
+      }),
+      color: chartSeriesColors[index]
     }))
   };
 };

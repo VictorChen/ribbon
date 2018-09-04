@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 import { styles } from '../styles/common';
 
 const TickerSymbol = styled.div`
-  color: '#c0c3cc';
+  color: ${styles.light2};
   font-size: 12px;
   font-weight: bold;
   flex: 0 0 60px;
@@ -31,18 +31,22 @@ const StyledAsyncSelect = styled(AsyncSelect)`
   }
 
   .ticker-autocomplete__input {
-    color: ${styles.white1};
+    color: ${styles.light1};
   }
 
   .ticker-autocomplete__value-container .ticker-autocomplete__single-value {
-    color: ${styles.white1};
+    color: ${styles.light1};
   }
 
   .ticker-autocomplete__value-container--has-value ${TickerSymbol} {
-    color: #c0c3cc;
-    opacity: 0.5;
+    color: ${styles.light2};
     font-weight: normal;
     font-size: 10px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
   }
 
   .ticker-autocomplete__control {

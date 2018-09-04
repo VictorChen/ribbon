@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { styles } from '../styles/common';
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -8,6 +9,7 @@ const Wrapper = styled.div`
 `;
 
 const Field = styled.span`
+  color: ${styles.light3};
   border: 0;
   display: inline-block;
   font-size: 18px;
@@ -19,7 +21,6 @@ const Field = styled.span`
 const InputField = Field.withComponent('input').extend`
   background-color: transparent;
   box-sizing: border-box;
-  color: white;
   width: ${props => props.width}
   outline: none;
   opacity: 0.8;

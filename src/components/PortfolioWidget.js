@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import TickerAutocomplete from './TickerAutocomplete';
 import EditableField from './EditableField';
 import PercentField from './PercentField';
+import { Icon } from 'react-icons-kit';
+import { chevronDown, chevronUp } from 'react-icons-kit/feather/';
+import { styles } from '../styles/common';
 import { connect } from 'react-redux';
 import {
   renamePortfolio,
@@ -20,8 +23,22 @@ const TitleEditableField = styled(EditableField)`
 `;
 
 const PortfolioHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 20px;
 `;
+
+const PortfolioHeaderLeft = styled.div`
+  display: flex;
+`;
+
+const CollapseIconWrapper = styled.div`
+  color: ${props => props.color};
+  cursor: pointer;
+  display: flex;
+`;
+
+const PortfolioHeaderRight = styled.div``;
 
 const HoldingRow = styled.div`
   align-items: center;
@@ -54,6 +71,38 @@ const AddButton = styled.span`
   }
 `;
 
+const HoldingTag = styled.div`
+  display: inline-flex;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-right: 10px;
+  margin-bottom: 10px;
+`;
+
+const HoldingTagTicker = styled.span`
+  background-color: #597186;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: ${styles.light1};
+  padding: 4px 5px 4px 10px;
+`;
+
+const HoldingTagPercent = styled.span`
+  background-color: #405b77;
+  font-size: 12px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: ${styles.light1};
+  padding: 4px 10px 4px 5px;
+`;
+
 const HoldingsList = styled.div`
   padding-right: 40px;
 `;
@@ -63,7 +112,12 @@ class PortfolioWidget extends React.Component {
     className: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     portfolioId: PropTypes.string.isRequired,
-    portfolio: PropTypes.object.isRequired
+    portfolio: PropTypes.object.isRequired,
+    color: PropTypes.string.isRequired
+  };
+
+  state = {
+    isCollapsed: false
   };
 
   handleRename = name => {
@@ -90,20 +144,30 @@ class PortfolioWidget extends React.Component {
     dispatch(addHolding(portfolioId, '', 0));
   };
 
-  render() {
-    const { className, portfolio } = this.props;
+  toggleCollapse = () => {
+    this.setState({ isCollapsed: !this.state.isCollapsed });
+  };
 
+  renderOverview() {
     return (
-      <Wrapper className={className}>
-        <PortfolioHeader>
-          <TitleEditableField
-            value={portfolio.name}
-            onChange={this.handleRename}
-            width="100%"
-          />
-        </PortfolioHeader>
+      <div>
+        {this.props.portfolio.holdings.map(holding => (
+          <HoldingTag key={holding.id}>
+            <HoldingTagTicker>
+              {holding.ticker.symbol || 'N/A'}
+            </HoldingTagTicker>
+            <HoldingTagPercent>{holding.percent}%</HoldingTagPercent>
+          </HoldingTag>
+        ))}
+      </div>
+    );
+  }
+
+  renderHoldings() {
+    return (
+      <React.Fragment>
         <HoldingsList>
-          {portfolio.holdings.map(holding => (
+          {this.props.portfolio.holdings.map(holding => (
             <HoldingRow key={holding.id}>
               <TickerAutocomplete
                 showNotSupportedError={holding.unsupportedSymbol}
@@ -125,23 +189,46 @@ class PortfolioWidget extends React.Component {
         <ButtonWrapper>
           <AddButton onClick={this.handleAddHolding}>+ New Asset</AddButton>
         </ButtonWrapper>
+      </React.Fragment>
+    );
+  }
+
+  render() {
+    const { className, portfolio, color } = this.props;
+    const { isCollapsed } = this.state;
+    const collapseIcon = isCollapsed ? chevronUp : chevronDown;
+
+    return (
+      <Wrapper className={className}>
+        <PortfolioHeader>
+          <PortfolioHeaderLeft>
+            <TitleEditableField
+              value={portfolio.name}
+              onChange={this.handleRename}
+              width="100%"
+            />
+            <CollapseIconWrapper color={color} onClick={this.toggleCollapse}>
+              <Icon size={28} icon={collapseIcon} />
+            </CollapseIconWrapper>
+          </PortfolioHeaderLeft>
+          <PortfolioHeaderRight />
+        </PortfolioHeader>
+        {isCollapsed ? this.renderOverview() : this.renderHoldings()}
       </Wrapper>
     );
   }
 }
 
-const mapStateToProps = (state, props) => {
-  return {
-    portfolio: {
-      ...state.portfoliosById[props.portfolioId],
-      holdings: state.portfoliosById[props.portfolioId].holdings.map(
-        holdingId => ({
-          ...state.holdingsById[holdingId],
-          id: holdingId
-        })
-      )
-    }
-  };
-};
+const mapStateToProps = (state, props) => ({
+  portfolio: {
+    ...state.portfoliosById[props.portfolioId],
+    holdings: state.portfoliosById[props.portfolioId].holdings.map(
+      holdingId => ({
+        ...state.holdingsById[holdingId],
+        id: holdingId
+      })
+    )
+  }
+});
 
 export default connect(mapStateToProps)(PortfolioWidget);

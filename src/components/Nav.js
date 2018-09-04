@@ -1,25 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
 import { styles } from '../styles/common';
+import logoSrc from '../assets/ribbon-logo.svg';
 
 const Wrapper = styled.div`
   height: ${styles.navHeight}px;
   position: relative;
 `;
 
-const Logo = styled.div`
-  color: #4d9ef0;
-  font-size: 16px;
-  font-weight: bold;
+const LogoWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  height: ${styles.navHeight}px;
+  justify-content: center;
+  width: 80px;
   position: absolute;
-  top: 30px;
-  left: 15px;
+  top: 0;
+  left: 0;
+
+  img {
+    width: 28px;
+  }
 `;
 
 const Nav = () => {
   return (
     <Wrapper>
-      <Logo>ribbon</Logo>
+      <LogoWrapper>
+        <img src={logoSrc} alt="logo" />
+      </LogoWrapper>
     </Wrapper>
   );
 };

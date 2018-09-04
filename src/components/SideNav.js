@@ -3,38 +3,25 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { styles } from '../styles/common';
+import { Icon } from 'react-icons-kit';
+import { home, settings } from 'react-icons-kit/feather/';
 
 const Wrapper = styled.div`
   flex: 0 0 ${styles.navWidth}px;
-`;
-
-const PlaceHolderIcon = styled.div`
-  border: 1px solid #000;
-  border-radius: 100%;
-  display: inline-block;
-  width: 28px;
-  height: 24px;
-  background-color: white;
-  opacity: 0.7;
-  transition: opacity 0.3s;
 `;
 
 const SideNavItem = styled.div`
   align-items: center;
   background-image: ${props =>
     props.active
-      ? 'linear-gradient(to right, #3866af, rgba(78, 140, 193, 0))'
+      ? 'linear-gradient(to right, #8fbfc9, rgba(143, 191, 201, 0))'
       : 'none'};
   cursor: pointer;
   display: flex;
   height: 68px;
   justify-content: center;
-  opacity: 0.56;
+  opacity: ${props => (props.active ? '1' : '0.56')};
   width: 80px;
-
-  &:hover ${PlaceHolderIcon} {
-    opacity: 1;
-  }
 `;
 
 class SideNav extends React.Component {
@@ -47,10 +34,10 @@ class SideNav extends React.Component {
     return (
       <Wrapper>
         <SideNavItem active>
-          <PlaceHolderIcon />
+          <Icon size={28} icon={home} />
         </SideNavItem>
         <SideNavItem>
-          <PlaceHolderIcon />
+          <Icon size={28} icon={settings} />
         </SideNavItem>
       </Wrapper>
     );

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PortfolioWidget from './PortfolioWidget';
 import PropTypes from 'prop-types';
 import { addPortfolio, addHolding } from '../actions';
+import { chartSeriesColors } from '../styles/common';
 
 const Wrapper = styled.div`
   margin-right: 60px;
@@ -18,30 +19,18 @@ const ButtonWrapper = styled.div`
 `;
 
 const AddButton = styled.button`
-  border: 1px solid #808080;
-  border-radius: 6px;
-  padding: 6px;
-  color: #818999;
+  border: 0;
+  border-radius: 20px;
+  background-image: linear-gradient(to right, #328b9d, #26437a);
+  box-shadow: 3px 3px 4px 0 rgba(11, 24, 49, 0.23);
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  color: #ededee;
   cursor: pointer;
   outline: 0;
+  text-transform: uppercase;
   margin: 0;
-  background-color: transparent;
-  font-size: 16px;
-  transition: color 0.3s;
-
-  img {
-    width: 18px;
-    height: 18px;
-    margin-right: 5px;
-  }
-
-  & > * {
-    vertical-align: middle;
-  }
-
-  &:hover {
-    color: white;
-  }
+  font-size: 14px;
 `;
 
 class PortfoliosList extends React.Component {
@@ -57,12 +46,16 @@ class PortfoliosList extends React.Component {
   render() {
     return (
       <Wrapper>
-        {this.props.portfolios.map(portfolioId => (
-          <StyledPortfolioWidget key={portfolioId} portfolioId={portfolioId} />
+        {this.props.portfolios.map((portfolioId, index) => (
+          <StyledPortfolioWidget
+            key={portfolioId}
+            portfolioId={portfolioId}
+            color={chartSeriesColors[index]}
+          />
         ))}
         <ButtonWrapper>
           <AddButton onClick={this.handleAdd}>
-            <span>+ Add Portfolio</span>
+            <span>Add Portfolio</span>
           </AddButton>
         </ButtonWrapper>
       </Wrapper>

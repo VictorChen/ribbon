@@ -10,8 +10,7 @@ import { styles } from './styles/common';
 import './styles/globalStyles';
 
 const AppWrapper = styled.div`
-  background-image: linear-gradient(157deg, #8f96f180 -112%, #16154e80 78%);
-  background-color: #19334d;
+  background-image: linear-gradient(163deg, #205a65, #1f3663);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -27,6 +26,7 @@ const AppBody = styled.div`
 const AppSide = styled.div`
   display: flex;
   flex: 0 0 ${styles.sideWidth}px;
+  margin-top: 20px;
 `;
 
 const SideContent = styled.div`

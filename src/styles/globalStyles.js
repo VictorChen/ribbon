@@ -4,7 +4,7 @@ import tooltipStyles from './tooltipStyles';
 
 injectGlobal`
   body {
-    color: ${styles.white1};
+    color: ${styles.light1};
     padding: 0;
     margin: 0;
     font-family: 'Open Sans', sans-serif;

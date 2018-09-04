@@ -68,7 +68,7 @@ const tooltipStyles = `
   }
   .rc-tooltip-inner {
     padding: 10px;
-    color: ${styles.white1};
+    color: ${styles.light1};
     text-align: left;
     text-decoration: none;
     background-color: ${styles.dark1};

@@ -5,15 +5,23 @@ import CreatableSelect from 'react-select/lib/Creatable';
 import { styles } from '../styles/common';
 
 const PercentNumber = styled.span`
-  color: #4e8cc1;
+  color: ${styles.light1};
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
 `;
 
 const PercentSymbol = styled.span`
-  color: white;
+  color: ${styles.light1};
   font-size: 16px;
   margin-left: 4px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
 `;
 
 const StyledCreatableSelect = styled(CreatableSelect)`
@@ -32,7 +40,7 @@ const StyledCreatableSelect = styled(CreatableSelect)`
   }
 
   .percent-field__input {
-    color: ${styles.white1};
+    color: ${styles.light1};
   }
 
   .percent-field__value-container--has-value {
@@ -40,7 +48,7 @@ const StyledCreatableSelect = styled(CreatableSelect)`
   }
 
   .percent-field__value-container .percent-field__single-value {
-    color: ${styles.white1};
+    color: ${styles.light1};
     width: 100%;
     text-align: right;
   }
