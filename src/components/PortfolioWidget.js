@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TickerAutocomplete from './TickerAutocomplete';
 import EditableField from './EditableField';
+import PortfolioPieChart from './PortfolioPieChart';
 import PercentField from './PercentField';
 import { Icon } from 'react-icons-kit';
 import { chevronDown, chevronUp } from 'react-icons-kit/feather/';
@@ -23,12 +24,13 @@ const TitleEditableField = styled(EditableField)`
 `;
 
 const PortfolioHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 22px 26px;
+  grid-column-gap: 17px;
   margin-bottom: 20px;
 `;
 
-const PortfolioHeaderLeft = styled.div`
+const PortfolioName = styled.div`
   display: flex;
 `;
 
@@ -38,7 +40,7 @@ const CollapseIconWrapper = styled.div`
   display: flex;
 `;
 
-const PortfolioHeaderRight = styled.div``;
+const PortfolioPieChartWrapper = styled.div``;
 
 const HoldingRow = styled.div`
   align-items: center;
@@ -201,7 +203,7 @@ class PortfolioWidget extends React.Component {
     return (
       <Wrapper className={className}>
         <PortfolioHeader>
-          <PortfolioHeaderLeft>
+          <PortfolioName>
             <TitleEditableField
               value={portfolio.name}
               onChange={this.handleRename}
@@ -210,8 +212,10 @@ class PortfolioWidget extends React.Component {
             <CollapseIconWrapper color={color} onClick={this.toggleCollapse}>
               <Icon size={28} icon={collapseIcon} />
             </CollapseIconWrapper>
-          </PortfolioHeaderLeft>
-          <PortfolioHeaderRight />
+          </PortfolioName>
+          <PortfolioPieChartWrapper>
+            <PortfolioPieChart holdings={portfolio.holdings} />
+          </PortfolioPieChartWrapper>
         </PortfolioHeader>
         {isCollapsed ? this.renderOverview() : this.renderHoldings()}
       </Wrapper>

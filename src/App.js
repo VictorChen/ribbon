@@ -10,7 +10,11 @@ import { styles } from './styles/common';
 import './styles/globalStyles';
 
 const AppWrapper = styled.div`
-  background-image: linear-gradient(163deg, #205a65, #1f3663);
+  background-image: linear-gradient(
+    139deg,
+    rgba(37, 101, 113, 1) 0%,
+    rgba(31, 54, 99, 1) 51%
+  );
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
